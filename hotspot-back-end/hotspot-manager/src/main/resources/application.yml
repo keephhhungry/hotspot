@@ -1,0 +1,35 @@
+# Spring配置
+server:
+  # 端口
+  port: 8080
+  servlet:
+    # 应用访问路径
+    context-path: /
+  tomcat:
+    #  tomcat编码
+    uri-encoding: UTF-8
+    # 连接数满后的排队数，默认为100
+    accept-count: 100
+    threads:
+      # tomcat 最大线程数，默认为200
+      max: 300
+      # Tomcat 启动初始化的线程数，默认值10
+      min-spare: 100
+
+spring:
+  profiles:
+    active: druid
+  # 服务模块
+  devtools:
+    restart:
+      enabled: true
+  security:
+    user:
+      name: admin
+      password: admin
+
+# 日志配置
+logging:
+  level:
+    org.cxyxh: debug
+    org.springframework: info

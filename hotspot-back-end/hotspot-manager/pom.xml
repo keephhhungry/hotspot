@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.cxyxh</groupId>
+		<artifactId>hotspot-back-end</artifactId>
+		<version>0.0.1</version>
+	</parent>
+	<packaging>pom</packaging>
+	<artifactId>hotspot-manager</artifactId>
+
+	<description>
+		hotspot-manager
+	</description>
+
+	<dependencies>
+		<!-- spring-boot-devtools -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional> <!-- 表示依赖不会传递 -->
+		</dependency>
+
+		<dependency>
+			<groupId>org.cxyxh</groupId>
+			<artifactId>hotspot-common</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.cxyxh</groupId>
+			<artifactId>hotspot-system</artifactId>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
