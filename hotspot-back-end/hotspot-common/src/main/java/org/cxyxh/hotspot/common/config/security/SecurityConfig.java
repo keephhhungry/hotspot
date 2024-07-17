@@ -1,5 +1,6 @@
 package org.cxyxh.hotspot.common.config.security;
 
+import org.cxyxh.hotspot.common.service.impl.UserDetailsServiceImpl;
 import org.cxyxh.hotspot.common.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,13 +27,13 @@ public class SecurityConfig{
 	 * 自定义用户认证逻辑
 	 */
 	@Autowired
-	UserServiceImpl userServiceImpl;
+	UserDetailsServiceImpl	userDetailsService;
 
-	@Autowired
-	CustomFilterInvocationSecurityMetadataSource customFilterInvocationSecurityMetadataSource;
-
-	@Autowired
-	CustomUrlDecisionManager customUrlDecisionManager;
+	//@Autowired
+	//CustomFilterInvocationSecurityMetadataSource customFilterInvocationSecurityMetadataSource;
+	//
+	//@Autowired
+	//CustomUrlDecisionManager customUrlDecisionManager;
 
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -43,6 +44,12 @@ public class SecurityConfig{
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
 		return authenticationConfiguration.getAuthenticationManager();
+	}
+
+	public static void main(String[] args) {
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		String encode = encoder.encode("123");
+		System.out.println(encode);
 	}
 
 	//@Bean
@@ -80,7 +87,7 @@ public class SecurityConfig{
 				.sessionManagement( session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				// 过滤请求 对于登录login 注册register 验证码captchaImage 允许匿名访问
 				.authorizeHttpRequests(authorize -> authorize.requestMatchers("/login", "/register", "/captchaImage").anonymous())
-				.authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.GET,"/", "/*.html", "/**/*.html","/**/*.css","/**/*.js","/profile/**").permitAll())
+				//.authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.GET,"/", "/*.html", "/**/*.html","/**/*.css","/**/*.js","/profile/**").permitAll())
 				.authorizeHttpRequests(authorize -> authorize.requestMatchers("/swagger-ui.html").anonymous())
 				.authorizeHttpRequests(authorize -> authorize.requestMatchers("/swagger-resources/**").anonymous())
 				.authorizeHttpRequests(authorize -> authorize.requestMatchers("/webjars/**").anonymous())
@@ -92,11 +99,6 @@ public class SecurityConfig{
 		return httpSecurity.build();
 	}
 
-	/**
-	 * 身份认证接口
-	 */
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userServiceImpl).passwordEncoder(bCryptPasswordEncoder());
-	}
+
 
 }

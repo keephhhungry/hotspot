@@ -7,7 +7,7 @@
 		<artifactId>hotspot-back-end</artifactId>
 		<version>0.0.1</version>
 	</parent>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 	<artifactId>hotspot-manager</artifactId>
 
 	<description>
@@ -25,11 +25,6 @@
 		<dependency>
 			<groupId>org.cxyxh</groupId>
 			<artifactId>hotspot-common</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.cxyxh</groupId>
-			<artifactId>hotspot-system</artifactId>
 		</dependency>
 
 	</dependencies>

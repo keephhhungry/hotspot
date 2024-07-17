@@ -15,7 +15,6 @@
     <modules>
         <module>hotspot-common</module>
         <module>hotspot-manager</module>
-        <module>hotspot-system</module>
     </modules>
 
     <properties>
@@ -29,6 +28,7 @@
         <commons.io.version>2.16.1</commons.io.version>
         <commons.lang3.version>3.14.0</commons.lang3.version>
         <lombok.version>1.18.34</lombok.version>
+        <mybatis-spring.version>3.0.3</mybatis-spring.version>
     </properties>
 
 
@@ -81,6 +81,13 @@
                 <version>${commons-lang3.version}</version>
             </dependency>
 
+            <!-- spring和mybatis不兼容，需要修改mybatis中的包的版本 -->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>${mybatis-spring.version}</version>
+            </dependency>
+
             <!-- lombok -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -92,12 +99,6 @@
             <dependency>
                 <groupId>org.cxyxh</groupId>
                 <artifactId>hotspot-manager</artifactId>
-                <version>${hotspot.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.cxyxh</groupId>
-                <artifactId>hotspot-system</artifactId>
                 <version>${hotspot.version}</version>
             </dependency>
 
@@ -123,6 +124,10 @@
                     <target>${java.version}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

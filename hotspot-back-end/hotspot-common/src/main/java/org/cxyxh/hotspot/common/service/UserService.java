@@ -1,6 +1,7 @@
 package org.cxyxh.hotspot.common.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.google.protobuf.ServiceException;
 import org.cxyxh.hotspot.common.entity.LoginUser;
 import org.cxyxh.hotspot.common.entity.model.LoginBody;
 
@@ -11,5 +12,5 @@ import org.cxyxh.hotspot.common.entity.model.LoginBody;
  */
 public interface UserService extends IService<LoginUser> {
 
-	String login(String username, String password, String code, String uuid);
+	String login(String username, String password, String code, String uuid) throws ServiceException;
 }

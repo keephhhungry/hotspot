@@ -1,11 +1,13 @@
 package org.cxyxh.hotspot.manager;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"org.cxyxh.hotspot.manager", "org.cxyxh.hotspot.common"})
+@MapperScan(basePackages = {"org.cxyxh.hotspot.common.mapper"})
 public class HotspotManagerApplication {
 
 	public static void main(String[] args) {

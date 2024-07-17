@@ -3,6 +3,9 @@ package org.cxyxh.hotspot.common.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.cxyxh.hotspot.common.entity.LoginUser;
+import org.cxyxh.hotspot.common.entity.Role;
+
+import java.util.List;
 
 /**
  * @author ： cxyxh
@@ -10,7 +13,7 @@ import org.cxyxh.hotspot.common.entity.LoginUser;
  * @describetion :
  */
 @Mapper
-public interface UserMapper extends BaseMapper<LoginUser> {
+public interface RoleMapper extends BaseMapper<Role> {
 
-
+	List<Role> getRolesByUserId(Long userId);
 }

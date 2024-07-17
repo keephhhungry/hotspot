@@ -1,10 +1,15 @@
 package org.cxyxh.hotspot.common.entity;
 
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -14,36 +19,57 @@ import java.util.List;
  * @describetion :
  */
 @ToString
+@TableName("user")
 public class LoginUser implements UserDetails {
 
-	private Integer userId;
+	private Long userId;
 
-	private String userName;
+	private String username;
 
 	private String password;
+
+	@TableField(exist = false)
+	private List<Role> roles;
+
 
 	public LoginUser() {
 	}
 
-	public Integer getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Integer userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
 	public String getUserName() {
-		return userName;
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUserName(String username) {
+		this.username = username;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of();
+		List<SimpleGrantedAuthority> authorities = new ArrayList<>(CollectionUtils.isEmpty(roles)? 0 : roles.size());
+		for (Role role : roles) {
+			authorities.add(new SimpleGrantedAuthority(role.getName()));
+		}
+		return authorities;
 	}
 
 	@Override
@@ -53,26 +79,26 @@ public class LoginUser implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return userName;
+		return username;
 	}
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return UserDetails.super.isAccountNonExpired();
+		return true;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return UserDetails.super.isAccountNonLocked();
+		return true;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return UserDetails.super.isCredentialsNonExpired();
+		return true;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		return UserDetails.super.isEnabled();
+		return true;
 	}
 }
