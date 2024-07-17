@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.protobuf.ServiceException;
 import jakarta.annotation.Resource;
+import org.cxyxh.hotspot.common.async.AsyncFactory;
+import org.cxyxh.hotspot.common.async.AsyncManager;
+import org.cxyxh.hotspot.common.constant.Constants;
 import org.cxyxh.hotspot.common.entity.LoginUser;
 import org.cxyxh.hotspot.common.mapper.UserMapper;
 import org.cxyxh.hotspot.common.service.UserService;
@@ -43,10 +46,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, LoginUser> implemen
 		Authentication authentication = null;
 		try {
 			// 该方法会去调用UserDetailsServiceImpl.loadUserByUsername
-			authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+		authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		} catch (Exception e) {
 			if (e instanceof BadCredentialsException) {
-				//	AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
+				AsyncManager.me().execute(AsyncFactory.recordLoginInfo(username, Constants.LOGIN_FAIL, Constants.USER_PASSWORD_NOT_MATCH));
 				//throw new UserPasswordNotMatchException();
 				log.info("Bad credentials");
 				throw new ServiceException(e.getMessage());
