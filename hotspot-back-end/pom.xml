@@ -22,6 +22,7 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-boot.version>3.3.1</spring-boot.version>
+        <spring-boot-redis.version>3.3.1</spring-boot-redis.version>
         <mysql.version>8.4.0</mysql.version>
         <druid.version>1.2.23</druid.version>
         <mybatis-plus.version>3.5.7</mybatis-plus.version>
@@ -98,13 +99,21 @@
                 <version>${jwt.version}</version>
             </dependency>
 
-            <!-- servlet -->
+            <!-- Redis -->
             <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
-                <version>4.0.1</version>
-                <scope>provided</scope>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${spring-boot-redis.version}</version>
             </dependency>
+
+
+            <!-- servlet -->
+<!--            <dependency>-->
+<!--                <groupId>javax.servlet</groupId>-->
+<!--                <artifactId>javax.servlet-api</artifactId>-->
+<!--                <version>4.0.1</version>-->
+<!--                <scope>provided</scope>-->
+<!--            </dependency>-->
 
 
             <!-- spring和mybatis不兼容，需要修改mybatis中的包的版本 -->

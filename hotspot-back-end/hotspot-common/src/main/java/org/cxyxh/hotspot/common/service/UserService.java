@@ -12,5 +12,5 @@ import org.cxyxh.hotspot.common.entity.model.LoginBody;
  */
 public interface UserService extends IService<LoginUser> {
 
-	String login(String username, String password, String code, String uuid) throws ServiceException;
+	String login(String username, String password, String code, String uuid) throws Exception;
 }

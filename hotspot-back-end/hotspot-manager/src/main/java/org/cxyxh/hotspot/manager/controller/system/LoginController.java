@@ -1,6 +1,5 @@
 package org.cxyxh.hotspot.manager.controller.system;
 
-import com.google.protobuf.ServiceException;
 import org.cxyxh.hotspot.common.entity.model.LoginBody;
 import org.cxyxh.hotspot.common.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ public class LoginController {
 	UserService userService;
 
 	@GetMapping("/login")
-	public String login(@RequestBody LoginBody loginBody) throws ServiceException {
+	public String login(@RequestBody LoginBody loginBody) throws Exception {
 		String login = userService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
 				loginBody.getUuid());
 		return login;

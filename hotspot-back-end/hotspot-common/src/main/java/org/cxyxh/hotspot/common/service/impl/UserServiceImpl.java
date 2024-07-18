@@ -1,15 +1,17 @@
 package org.cxyxh.hotspot.common.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.google.protobuf.ServiceException;
 import jakarta.annotation.Resource;
 import org.cxyxh.hotspot.common.async.AsyncFactory;
 import org.cxyxh.hotspot.common.async.AsyncManager;
 import org.cxyxh.hotspot.common.constant.Constants;
 import org.cxyxh.hotspot.common.entity.LoginUser;
+import org.cxyxh.hotspot.common.exception.ServiceException;
+import org.cxyxh.hotspot.common.exception.user.UserPasswordNotMatchException;
 import org.cxyxh.hotspot.common.mapper.UserMapper;
 import org.cxyxh.hotspot.common.service.UserService;
+import org.cxyxh.hotspot.common.utils.ServletUtils;
+import org.cxyxh.hotspot.common.utils.ip.IpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +19,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
+import java.time.LocalDateTime;
 
 /**
  * @author ： cxyxh
@@ -41,39 +40,40 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, LoginUser> implemen
 	UserMapper userMapper;
 
 	@Override
-	public String login(String username, String password, String code, String uuid) throws ServiceException {
+	public String login(String username, String password, String code, String uuid) {
 		// 用户验证
 		Authentication authentication = null;
 		try {
 			// 该方法会去调用UserDetailsServiceImpl.loadUserByUsername
-		authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+			authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		} catch (Exception e) {
 			if (e instanceof BadCredentialsException) {
-				AsyncManager.me().execute(AsyncFactory.recordLoginInfo(username, Constants.LOGIN_FAIL, Constants.USER_PASSWORD_NOT_MATCH));
-				//throw new UserPasswordNotMatchException();
-				log.info("Bad credentials");
-				throw new ServiceException(e.getMessage());
+				AsyncManager.getInstance().execute(AsyncFactory.recordLoginInfo(username, Constants.LOGIN_FAIL, Constants.USER_PASSWORD_NOT_MATCH));
+				throw new UserPasswordNotMatchException();
 			} else {
-				//	AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, e.getMessage()));
+				AsyncManager.getInstance().execute(AsyncFactory.recordLoginInfo(username, Constants.LOGIN_FAIL, e.getMessage()));
 				throw new ServiceException(e.getMessage());
 			}
 		}
+		AsyncManager.getInstance().execute(AsyncFactory.recordLoginInfo(username, Constants.LOGIN_SUCCESS, Constants.USER_LOGIN_SUCCESS));
 		LoginUser loginUser = (LoginUser) authentication.getPrincipal();
-		//LoginUser loginUser = new LoginUser();
+		recordLoginInfo(loginUser.getUserId());
 
 		return loginUser.toString();
 	}
 
-	//@Override
-	//public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-	//	QueryWrapper<LoginUser> qw = new QueryWrapper<>();
-	//	qw.eq("username", username);
-	//	LoginUser loginUser = userMapper.selectOne(qw);
-	//	if (Objects.isNull(loginUser)) {
-	//		throw new UsernameNotFoundException("用户不存在");
-	//	}
-	//	return loginUser;
-	//}
+	/**
+	 * 记录登录信息
+	 *
+	 * @param userId 用户ID
+	 */
+	public void recordLoginInfo(Long userId) {
+		LoginUser loginUser = userMapper.selectById(userId);
+		loginUser.setUserId(userId);
+		//loginUser.setIp(IpUtils.getIpAddr(ServletUtils.getRequest()));
+		loginUser.setLoginDate(LocalDateTime.now());
+		userMapper.updateById(loginUser);
+	}
 
 
 }

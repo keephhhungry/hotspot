@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.CollectionUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -40,7 +41,7 @@ public class LoginUser extends BaseEntity implements UserDetails {
 	private Integer age;
 
 	@TableField("sex")
-	private char sex;
+	private String sex;
 
 	@TableField("telephone")
 	private String telephone;
@@ -49,7 +50,13 @@ public class LoginUser extends BaseEntity implements UserDetails {
 	private String email;
 
 	@TableField("status")
-	private char status;
+	private String status;
+
+	@TableField("ip")
+	private String ip;
+
+	@TableField("login_date")
+	private LocalDateTime loginDate;
 
 	@TableField("del_flag")
 	private char delFlag;
@@ -60,6 +67,12 @@ public class LoginUser extends BaseEntity implements UserDetails {
 
 	@TableField(exist = false)
 	private List<Role> roles;
+
+	@TableField(exist = false)
+	private String token;
+
+	@TableField(exist = false)
+	private Long expireTime;
 
 
 	public LoginUser() {
@@ -113,13 +126,6 @@ public class LoginUser extends BaseEntity implements UserDetails {
 		this.age = age;
 	}
 
-	public char getSex() {
-		return sex;
-	}
-
-	public void setSex(char sex) {
-		this.sex = sex;
-	}
 
 	public String getTelephone() {
 		return telephone;
@@ -137,14 +143,6 @@ public class LoginUser extends BaseEntity implements UserDetails {
 		this.email = email;
 	}
 
-	public char getStatus() {
-		return status;
-	}
-
-	public void setStatus(char status) {
-		this.status = status;
-	}
-
 	public char getDelFlag() {
 		return delFlag;
 	}
@@ -159,6 +157,54 @@ public class LoginUser extends BaseEntity implements UserDetails {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	public LocalDateTime getLoginDate() {
+		return loginDate;
+	}
+
+	public void setLoginDate(LocalDateTime loginDate) {
+		this.loginDate = loginDate;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public Long getExpireTime() {
+		return expireTime;
+	}
+
+	public void setExpireTime(Long expireTime) {
+		this.expireTime = expireTime;
 	}
 
 	@Override

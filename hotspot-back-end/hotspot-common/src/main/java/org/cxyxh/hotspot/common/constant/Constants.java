@@ -165,4 +165,5 @@ public class Constants {
 			"org.springframework", "org.apache", "org.javaboy.tienchin.common.utils.file"};
 
 	public static final String USER_PASSWORD_NOT_MATCH = "用户不存在/密码错误";
+	public static final String USER_LOGIN_SUCCESS = "登录成功";
 }

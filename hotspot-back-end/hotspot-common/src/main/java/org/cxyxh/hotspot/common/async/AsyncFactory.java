@@ -12,7 +12,10 @@ import org.cxyxh.hotspot.common.utils.ip.IpUtils;
 import org.cxyxh.hotspot.common.utils.spring.SpringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.TimerTask;
 
 /**
@@ -20,9 +23,12 @@ import java.util.TimerTask;
  *
  * @author tienchin
  */
+@Component
 public class AsyncFactory {
 
 	private static final Logger sys_user_logger = LoggerFactory.getLogger("sys-user");
+
+	private static LoginInfoService loginInfoService = SpringUtils.getBean(LoginInfoService.class);
 
 	/**
 	 * 记录登录信息
@@ -68,8 +74,9 @@ public class AsyncFactory {
 				} else if (Constants.LOGIN_FAIL.equals(status)) {
 					loginInfo.setStatus(Constants.FAIL);
 				}
+				loginInfo.setLoginTime(LocalDateTime.now());
 				// 插入数据
-				SpringUtils.getBean(LoginInfoService.class).addLoginInfo(loginInfo);
+				loginInfoService.addLoginInfo(loginInfo);
 			}
 		};
 	}
